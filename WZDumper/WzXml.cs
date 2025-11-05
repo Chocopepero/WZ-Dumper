@@ -73,7 +73,12 @@ namespace WzDumper {
                     xmlWriter.WriteStartAttribute("name");
                     xmlWriter.WriteValue(img.Name);
                     CurrentImageDir = Path.Combine(mainDir, img.Name);
-                    DumpData(xmlWriter, img.WzProperties, CurrentImageDir);
+                    var filteredProps = img.WzProperties.Where(p => 
+                        p != null && 
+                        (p.Name.Equals("info", StringComparison.OrdinalIgnoreCase) || 
+                         p.Name.Equals("_Canvas", StringComparison.OrdinalIgnoreCase))
+                    );
+                    DumpData(xmlWriter, filteredProps, CurrentImageDir);
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteEndDocument();
                 }
